@@ -1,0 +1,153 @@
+## Argo CD configuration
+## Ref: https://github.com/argoproj/argo-cd
+## Ref: https://github.com/argoproj/argo-helm/blob/main/charts/argo-cd/values.yaml
+
+## Argo Configs
+configs:
+  # General Argo CD configuration
+  ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cm.yaml
+  cm:
+    # -- Enable exec feature in Argo UI
+    ## Ref: https://argo-cd.readthedocs.io/en/latest/operator-manual/rbac/#exec-resource
+    exec.enabled: true
+
+    # cluster.inClusterEnabled indicates whether to allow in-cluster server address. This is enabled by default. (https://github.com/argoproj/argo-cd/issues/14531)
+    cluster.inClusterEnabled: "true"
+
+  # Argo CD configuration parameters
+  ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cmd-params-cm.yaml
+  params:
+    ## Controller Properties
+    # -- Number of application status processors
+    controller.status.processors: 100
+    # -- Number of application operation processors
+    controller.operation.processors: 10
+    # -- Specifies timeout between application self heal attempts
+    controller.self.heal.timeout.seconds: 5
+    # -- Repo server RPC call timeout seconds.
+    controller.repo.server.timeout.seconds: 60
+
+    ## Repo-server properties
+    # -- Limit on number of concurrent manifests generate requests. Any value less the 1 means no limit.
+    reposerver.parallelism.limit: 5
+
+  # Argo CD RBAC policy configuration
+  ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md
+  rbac:
+    # -- File containing user-defined policies and role definitions.
+    # @default -- `''` (See [values.yaml])
+      policy.csv: |
+        p, role:myrole, exec, create, */*, allow
+
+  ## Enable this and set the rules: to whatever custom rules you want for the Cluster Role resource.
+  ## Defaults to off
+  clusterRoleRules:
+    # -- Enable custom rules for the application controller's ClusterRole resource
+    enabled: false
+    # -- List of custom rules for the application controller's ClusterRole resource
+    rules:
+      - apiGroups:
+        - ""
+        resources:
+        - pods/exec
+        verbs:
+        - create
+
+## Application controller
+controller:
+  # -- Application controller name string
+  name: application-controller
+
+  # -- The number of application controller pods to run.
+  # Additional replicas will cause sharding of managed clusters across number of replicas.
+  replicas: 2
+
+  ## Server metrics service configuration
+  metrics:
+    # -- Deploy metrics service
+    enabled: true
+    serviceMonitor:
+      # -- Enable a prometheus ServiceMonitor
+      enabled: true
+
+dex:
+  ## Server metrics service configuration
+  metrics:
+    # -- Deploy metrics service
+    enabled: true
+    serviceMonitor:
+      # -- Enable a prometheus ServiceMonitor
+      enabled: true
+
+redis:
+  ## Server metrics service configuration
+  metrics:
+    # -- Deploy metrics service
+    enabled: true
+    serviceMonitor:
+      # -- Enable a prometheus ServiceMonitor
+      enabled: true
+
+## Server service configuration -> https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#kubernetesingress-nginx
+server:
+  # service:
+  #   type: ClusterIP
+  ingress:
+    enabled: true
+    # -- Defines which ingress controller will implement the resource
+    ingressClassName: nginx
+    hostname: argocd.myorg.com
+    annotations:
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    # tls: 
+    #   - secretName: ingress-tls
+    #     hosts:
+    #       - argocd.example.com
+  ## Server metrics service configuration
+  metrics:
+    # -- Deploy metrics service
+    enabled: true
+    serviceMonitor:
+      # -- Enable a prometheus ServiceMonitor
+      enabled: true
+      # -- Prometheus ServiceMonitor labels
+      additionalLabels:
+        release: prometheus
+
+repoServer:
+  ## Server metrics service configuration
+  metrics:
+    # -- Deploy metrics service
+    enabled: true
+    serviceMonitor:
+      # -- Enable a prometheus ServiceMonitor
+      enabled: true
+      # -- Prometheus ServiceMonitor labels
+      additionalLabels:
+        release: prometheus
+
+applicationSet:
+  ## Server metrics service configuration
+  metrics:
+    # -- Deploy metrics service
+    enabled: true
+    serviceMonitor:
+      # -- Enable a prometheus ServiceMonitor
+      enabled: true
+      # -- Prometheus ServiceMonitor labels
+      additionalLabels:
+        release: prometheus
+
+notifications:
+  ## Server metrics service configuration
+  metrics:
+    # -- Deploy metrics service
+    enabled: true
+    serviceMonitor:
+      # -- Enable a prometheus ServiceMonitor
+      enabled: true
+      # -- Prometheus ServiceMonitor labels
+      additionalLabels:
+        release: prometheus
