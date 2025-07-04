@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: thanos
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: thanos
+      targetRevision: 15.7.15
+      helm:
+        valueFiles:
+          - $values/02-argocd/03-thanos/values.yaml
+    - repoURL: https://github.com/joudaon/grafana-prometheus-thanos-stack.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    name: in-cluster
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true
+  info:
+    - name: Artifact Hub
+      value: https://artifacthub.io/packages/helm/bitnami/thanos
+    - name: GitHub
+      value: https://github.com/bitnami/charts/tree/main/bitnami/thanos
