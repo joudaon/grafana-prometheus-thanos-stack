@@ -7,7 +7,7 @@ spec:
   project: default
   sources:
     - repoURL: https://operator.min.io
-      chart: tenat
+      chart: tenant
       targetRevision: 7.1.1
       helm:
         valueFiles:
