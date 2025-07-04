@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio-tenant
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://operator.min.io
+      chart: tenat
+      targetRevision: 7.1.1
+      helm:
+        valueFiles:
+          - $values/02-argocd/02-minio-tenant/values.yaml
+    - repoURL: https://github.com/joudaon/argocd.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    name: in-cluster
+    namespace: minio
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true
+  info:
+    - name: GitHub
+      value: https://github.com/minio/operator/tree/master
+    - name: Documentation
+      value: https://min.io/docs/minio/kubernetes/upstream/operations/install-deploy-manage/deploy-operator-helm.html
