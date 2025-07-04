@@ -12,7 +12,7 @@ spec:
       helm:
         valueFiles:
           - $values/02-argocd/02-minio-tenant/values.yaml
-    - repoURL: https://github.com/joudaon/argocd.git
+    - repoURL: https://github.com/joudaon/grafana-prometheus-thanos-stack.git
       targetRevision: HEAD
       ref: values
   destination:
