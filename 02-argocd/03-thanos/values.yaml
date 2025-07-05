@@ -203,7 +203,8 @@ query:
   command: []
   ## @param query.args Override default container args (useful when using custom images)
   ##
-  args: []
+  args:
+    - --store=receiver-store-1.monitoring.svc.cluster.local:10907
   ## @param query.replicaCount Number of Thanos Query replicas to deploy
   ##
   replicaCount: 1
