@@ -1,6 +1,10 @@
 # grafana-prometheus-thanos-stack
 grafana-prometheus-thanos-stack
 
+## Architecture
+
+![architecture](images/architecture.png)
+
 ### Documentation:
 - [A Thanos Remote Write: Scaling Metrics with Ease- Part1](https://medium.com/@mohitverma160288/thanos-remote-write-scaling-metrics-with-ease-part1-eb861b9aefa9)
 - [thanos-remote-write](https://github.com/mvtech88/thanos-remote-write)
