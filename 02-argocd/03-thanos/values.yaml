@@ -97,7 +97,7 @@ bucketCacheConfig: ""
 ## @param existingObjstoreSecret Secret with Objstore Configuration
 ## Note: This will override objstoreConfig
 ##
-existingObjstoreSecret: "objstore.yml"
+existingObjstoreSecret: "objstore"
 ## @param existingObjstoreSecretItems Optional item list for specifying a custom Secret key. If so, path should be objstore.yml
 ##
 existingObjstoreSecretItems: []
@@ -210,8 +210,8 @@ query:
     - --grpc-address=0.0.0.0:10901
     - --http-address=0.0.0.0:10902
     - --query.replica-label=replica
-    - --endpoint=dnssrv+_grpc._tcp.thanos-receive.monitoring.svc.cluster.local
-    - --endpoint=dnssrv+_grpc._tcp.thanos-storegateway.monitoring.svc.cluster.local
+    - --endpoint=thanos-receive.monitoring.svc.cluster.local
+    - --endpoint=thanos-storegateway.monitoring.svc.cluster.local
     - --alert.query-url=http://thanos-query.monitoring.svc.cluster.local:9090
     # - --store=thanos-receive.monitoring.svc.cluster.local:10907
   ## @param query.replicaCount Number of Thanos Query replicas to deploy
