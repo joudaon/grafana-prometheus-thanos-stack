@@ -212,7 +212,7 @@ query:
     - --query.replica-label=replica
     - --endpoint=dnssrv+_grpc._tcp.thanos-receive.monitoring.svc.cluster.local
     - --alert.query-url=http://thanos-query.monitoring.svc.cluster.local:9090
-    # - --store=thanos-receive.monitoring.svc.cluster.local:10907
+    - --store=thanos-receive.monitoring.svc.cluster.local:10907
   ## @param query.replicaCount Number of Thanos Query replicas to deploy
   ##
   replicaCount: 1
