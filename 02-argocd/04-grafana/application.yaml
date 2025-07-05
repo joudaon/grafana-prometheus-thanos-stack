@@ -29,5 +29,3 @@ spec:
   info:
     - name: Artifact Hub
       value: https://artifacthub.io/packages/helm/grafana/grafana
-    - name: GitHub
-      value: https://github.com/bitnami/charts/tree/main/bitnami/grafana
