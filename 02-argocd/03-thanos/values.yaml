@@ -4503,15 +4503,15 @@ receive:
   ingress:
     ## @param receive.ingress.enabled Set to true to enable ingress record generation
     ##
-    enabled: false
+    enabled: true
     ## @param receive.ingress.hostname When the ingress is enabled, a host pointing to this will be created
     ##
-    hostname: thanos-receive.local
+    hostname: receiver-write.example.com
     ## @param receive.ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
     ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
     ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
     ##
-    ingressClassName: ""
+    ingressClassName: nginx
     ## @param receive.ingress.labels Additional label for the Ingress resource.
     ## Use this parameter to set the required labels for your needs
     ## e.g:
