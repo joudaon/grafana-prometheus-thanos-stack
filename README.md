@@ -41,7 +41,7 @@ With `remote_write`, you can:
 - 💾 Cost-effective and scalable object storage (S3/MinIO).
 - 📊 Fully compatible with Grafana and native Prometheus queries.
 
-### Documentation:
+## 🔗 References
 - [A Thanos Remote Write: Scaling Metrics with Ease- Part1](https://medium.com/@mohitverma160288/thanos-remote-write-scaling-metrics-with-ease-part1-eb861b9aefa9)
 - [thanos-remote-write](https://github.com/mvtech88/thanos-remote-write)
 - [Thanos (Multi Cluster Prometheus) Tutorial: Global View - Long Term Storage - Kubernetes](https://www.youtube.com/watch?v=feHSU0BMcco&t=776s)
