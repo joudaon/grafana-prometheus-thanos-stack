@@ -210,7 +210,7 @@ query:
     - --grpc-address=0.0.0.0:10901
     - --http-address=0.0.0.0:10902
     - --query.replica-label=replica
-    - --endpoint=thanos-receive.monitoring.svc.cluster.local:10907
+    - --endpoint=thanos-receive.monitoring.svc.cluster.local:10901
     - --endpoint=thanos-storegateway.monitoring.svc.cluster.local:10901
     - --alert.query-url=http://thanos-query.monitoring.svc.cluster.local:9090
     # - --store=thanos-receive.monitoring.svc.cluster.local:10907
