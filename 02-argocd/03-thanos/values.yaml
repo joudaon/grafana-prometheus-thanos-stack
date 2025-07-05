@@ -209,7 +209,7 @@ query:
   replicaCount: 1
   ## @param query.revisionHistoryLimit The number of old history to retain to allow rollback
   ##
-  revisionHistoryLimit: 1
+  revisionHistoryLimit: 10
   ## @param query.updateStrategy.type Update strategy type for Thanos Query replicas
   ##
   updateStrategy:
@@ -4030,7 +4030,7 @@ receive:
   replicaCount: 1
   ## @param receive.revisionHistoryLimit The number of old history to retain to allow rollback
   ##
-  revisionHistoryLimit: 1
+  revisionHistoryLimit: 10
   ## @param receive.updateStrategy.type Update strategy type for Thanos Receive replicas
   ##
   updateStrategy:
