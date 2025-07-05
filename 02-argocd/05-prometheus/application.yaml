@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: prometheus
+      targetRevision: 9.2.10
+      helm:
+        valueFiles:
+          - $values/02-argocd/05-prometheus/values.yaml
+    - repoURL: https://github.com/joudaon/grafana-prometheus-thanos-stack.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    name: kind-slave
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true
+  info:
+    - name: Artifact Hub
+      value: https://artifacthub.io/packages/helm/prometheus-community/prometheus
