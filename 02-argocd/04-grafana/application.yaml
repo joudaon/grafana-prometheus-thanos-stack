@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://grafana.github.io/helm-charts
+      chart: grafana
+      targetRevision: 9.2.10
+      helm:
+        valueFiles:
+          - $values/02-argocd/04-grafana/values.yaml
+    - repoURL: https://github.com/joudaon/grafana-prometheus-grafana-stack.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    name: in-cluster
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true
+  info:
+    - name: Artifact Hub
+      value: https://artifacthub.io/packages/helm/grafana/grafana
+    - name: GitHub
+      value: https://github.com/bitnami/charts/tree/main/bitnami/grafana
