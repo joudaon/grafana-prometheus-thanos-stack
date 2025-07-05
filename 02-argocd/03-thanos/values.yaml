@@ -749,10 +749,10 @@ query:
   ingress:
     ## @param query.ingress.enabled Enable ingress controller resource
     ##
-    enabled: false
+    enabled: true
     ## @param query.ingress.hostname Default host for the ingress resource
     ##
-    hostname: thanos.local
+    hostname: querier-thanos.local
     ## @param query.ingress.secretName Custom secretName for the ingress resource
     ## If query.ingress.secretName is not set, the secret will be named as follows: query.ingress.hostname-tls
     secretName: ""
@@ -760,7 +760,7 @@ query:
     ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
     ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
     ##
-    ingressClassName: ""
+    ingressClassName: nginx
     ## @param query.ingress.labels Additional label for the Ingress resource.
     ## Use this parameter to set the required labels for your needs
     ## e.g:

@@ -46,3 +46,4 @@ With `remote_write`, you can:
 - [thanos-remote-write](https://github.com/mvtech88/thanos-remote-write)
 - [Thanos (Multi Cluster Prometheus) Tutorial: Global View - Long Term Storage - Kubernetes](https://www.youtube.com/watch?v=feHSU0BMcco&t=776s)
 - [Thanos (Prometheus) Tutorial: Remote Read/Write - mTLS - Step-by-Step!](https://github.com/antonputra/tutorials/tree/main/lessons/163)
+- [Thanos Remote Write](https://thanos.io/v0.10/201812_thanos-remote-receive.md/)
