@@ -2565,7 +2565,7 @@ compactor:
 storegateway:
   ## @param storegateway.enabled Enable/disable Thanos Store Gateway component
   ##
-  enabled: true
+  enabled: false
   ## @param storegateway.logLevel Thanos Store Gateway log level
   ##
   logLevel: info
