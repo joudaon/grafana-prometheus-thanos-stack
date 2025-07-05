@@ -93,7 +93,7 @@ indexCacheConfig: ""
 ## @param bucketCacheConfig The [bucket cache configuration](https://thanos.io/tip/components/store.md/)
 ## Specify content for bucket-cache.yml
 ##
-bucketCacheConfig: ""
+bucketCacheConfig: "objstore"
 ## @param existingObjstoreSecret Secret with Objstore Configuration
 ## Note: This will override objstoreConfig
 ##
