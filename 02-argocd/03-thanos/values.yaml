@@ -203,12 +203,15 @@ query:
   command: []
   ## @param query.args Override default container args (useful when using custom images)
   ##
-  args: []
-    # - query
-    # - --log.level=info
-    # - --endpoint.info-timeout=30s
-    # - --grpc-address=0.0.0.0:10901
-    # - --http-address=0.0.0.0:10902
+  args:
+    - query
+    - --log.level=info
+    - --log.format=logfmt
+    - --grpc-address=0.0.0.0:10901
+    - --http-address=0.0.0.0:10902
+    - --query.replica-label=replica
+    - --endpoint=dnssrv+_grpc._tcp.thanos-receive.monitoring.svc.cluster.local
+    - --alert.query-url=http://thanos-query.monitoring.svc.cluster.local:9090
     # - --store=thanos-receive.monitoring.svc.cluster.local:10907
   ## @param query.replicaCount Number of Thanos Query replicas to deploy
   ##
