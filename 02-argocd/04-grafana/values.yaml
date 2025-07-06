@@ -654,15 +654,16 @@ plugins: []
 ## Configure grafana datasources
 ## ref: http://docs.grafana.org/administration/provisioning/#datasources
 ##
-datasources: {}
-#  datasources.yaml:
-#    apiVersion: 1
-#    datasources:
-#    - name: Prometheus
-#      type: prometheus
-#      url: http://prometheus-prometheus-server
-#      access: proxy
-#      isDefault: true
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Thanos Querier
+      type: prometheus
+      access: proxy
+      url: http://thanos-query.monitoring.svc.cluster.local:9090
+      isDefault: true
+      editable: false
 #    - name: CloudWatch
 #      type: cloudwatch
 #      access: proxy
