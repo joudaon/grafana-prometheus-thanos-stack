@@ -1,25 +1,25 @@
+server:
+  ## Prometheus server container name
+  ##
+  name: kind-slave
+  ## https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
+  remoteWrite:
+    - url: https://receiver-write.example.com:8443/api/v1/receive
 
-prometheus:
-  prometheusSpec:
-    externalLabels:
-      cluster: kind-slave
-      env: pro
-    # Connecting with the other cluster to remote write metrics
-    remoteWrite: 
-      - url: https://receiver-write.example.com:8443/api/v1/receive
-
-# enable --web.enable-remote-write-receiver flag on prometheus-server
-    enableRemoteWriteReceiver: true
-
-## Component scraping kube state metrics
+## kube-state-metrics sub-chart configurable values
+## Please see https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-state-metrics
 ##
-kubeStateMetrics:
-  enabled: false
+kube-state-metrics:
+  ## If false, kube-state-metrics sub-chart will not be installed
+  ##
+  enabled: true
 
-nodeExporter:
-  enabled: false
-
-grafana:
+## prometheus-node-exporter sub-chart configurable values
+## Please see https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-node-exporter
+##
+prometheus-node-exporter:
+  ## If false, node-exporter will not be installed
+  ##
   enabled: false
 
 alertmanager:
