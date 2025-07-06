@@ -82,6 +82,12 @@ This script will:
 172.18.0.240  argocd.myorg.com grafana.local prometheus.local minio-console.local querier-thanos.local
 ```
 
+> 💡 Reminder: Configure Grafana Datasource
+  After deployment, **remember to add Thanos Querier as a Prometheus datasource in Grafana** to visualize all the aggregated metrics (already done in grafana values.yaml):
+  `http://thanos-query.monitoring.svc.cluster.local:9090`
+
+
+
 ### 🌐 Access Services
 
 | Service        | URL                                     | Notes                      |
