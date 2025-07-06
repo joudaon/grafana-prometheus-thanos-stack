@@ -2,6 +2,8 @@
 
 This project demonstrates how to **centralize metrics from multiple Kubernetes clusters** using Prometheus' `remote_write` feature in combination with **Thanos**, enabling scalable, long-term storage and unified querying.
 
+> ⚠️ **Note**: While the architecture diagram below depicts a multi-cluster setup, for the sake of simplicity and ease of local testing, **this lab deploys everything within a single Kind cluster** — including Prometheus and the entire Thanos stack.
+
 ## 🧠 What is `remote_write`?
 
 `remote_write` is a Prometheus feature that allows you to **forward metrics in real-time** to an external endpoint that supports the remote write API — such as **Thanos Receiver**.
@@ -18,32 +20,82 @@ With `remote_write`, you can:
 
 ### 🔍 Key Components
 
-- **Child Monitored Cluster**: runs Prometheus configured with `remote_write`, pushing metrics to the central observability system.
-- **Observability Cluster**: hosts the complete Thanos stack:
-  - **Receiver**: receives remote write data from external Prometheus instances.
+- **Prometheus** (deployed locally in the same cluster): configured with `remote_write`, pushing metrics to the central observability system.
+- **Thanos Stack**:
+  - **Receiver**: receives remote write data from Prometheus.
   - **Querier**: provides a unified PromQL API to query data across all sources.
-  - **Storage Gateway** and **Compactor**: handle long-term storage into an S3-compatible backend (MinIO in this case).
-  - **Grafana**: visualizes all metrics across clusters.
+  - **Storage Gateway** and **Compactor**: handle long-term storage into an S3-compatible backend (MinIO).
+  - **Grafana**: visualizes all metrics from the Thanos Querier.
 - **S3 Bucket (MinIO)**: stores all metrics persistently and durably.
 
 ## ⚙️ Data Flow
 
-1. Prometheus in each child cluster pushes metrics to the **Thanos Receiver** using `remote_write`.
+1. Prometheus pushes metrics to the **Thanos Receiver** using `remote_write`.
 2. The Receiver forwards the data to the **Storage Gateway**, which writes it to an **S3 bucket**.
-3. The **Querier** component aggregates data from both the receiver and the S3 bucket.
-4. **Grafana** queries the Querier to visualize the metrics from all clusters.
+3. The **Querier** component aggregates data from both the Receiver and the S3 bucket.
+4. **Grafana** queries the Querier to visualize the metrics.
 
 ## 🚀 Benefits
 
 - 🔁 Long-term storage of Prometheus metrics.
-- 📡 Centralized observability across multiple clusters.
-- 🧩 Easily extensible by adding more Prometheus instances.
+- 📡 Centralized observability, even in a single cluster.
+- 🧩 Easily extensible to a multi-cluster setup with more Prometheus instances.
 - 💾 Cost-effective and scalable object storage (S3/MinIO).
 - 📊 Fully compatible with Grafana and native Prometheus queries.
 
+## 🧪 Local Lab Setup with Kind & ArgoCD
+
+This project includes a fully local observability stack based on **Prometheus**, **Thanos**, **MinIO**, and **Grafana**, orchestrated with **ArgoCD**, all running inside a single [Kind](https://kind.sigs.k8s.io/) Kubernetes cluster.
+
+### 📦 Requirements
+
+- Docker
+- kubectl
+- kind
+- helm
+- argocd CLI
+- GNU bash (for the `setup.sh` script)
+- (Optional) `jq` and `curl` for debugging
+
+### 🚀 Deploy the lab
+
+To spin up the environment locally:
+
+```bash
+./01-environment-setup.sh
+```
+
+This script will:
+
+  1. Create a Kind cluster using the config in clusters/kind-master.yaml.
+
+  2. Install NGINX Ingress and MetalLB.
+
+  3. Deploy ArgoCD and login automatically.
+
+  4. (Optionally) Bootstrap Prometheus, Thanos, MinIO, and Grafana apps using ArgoCD.
+
+> ⚠️ Note: The lab assumes all services (ArgoCD, Grafana, etc.) will be exposed using MetalLB and reachable via custom local domains (e.g. `grafana.local`, `argocd.myorg.com`). You can add these to your `/etc/hosts` file like this:
+
+```bash
+# Example /etc/hosts entries
+172.18.0.240  argocd.myorg.com grafana.local prometheus.local minio-console.local querier-thanos.local
+```
+
+### 🌐 Access Services
+
+| Service        | URL                                     | Notes                      |
+|----------------|-----------------------------------------|----------------------------|
+| ArgoCD         | https://argocd.myorg.com:8443           | Argo UI for app management |
+| Grafana        | https://grafana.local:8443              | Metrics visualization      |
+| Prometheus     | https://prometheus.local:8444           | Prometheus UI (via Ingress)|
+| MinIO Console  | https://minio-console.local:9001        | S3-compatible storage UI   |
+| Thanos Querier | https://querier-thanos.local:8444       | Unified PromQL interface   |
+
+
 ## 🔗 References
-- [A Thanos Remote Write: Scaling Metrics with Ease- Part1](https://medium.com/@mohitverma160288/thanos-remote-write-scaling-metrics-with-ease-part1-eb861b9aefa9)
-- [thanos-remote-write](https://github.com/mvtech88/thanos-remote-write)
-- [Thanos (Multi Cluster Prometheus) Tutorial: Global View - Long Term Storage - Kubernetes](https://www.youtube.com/watch?v=feHSU0BMcco&t=776s)
-- [Thanos (Prometheus) Tutorial: Remote Read/Write - mTLS - Step-by-Step!](https://github.com/antonputra/tutorials/tree/main/lessons/163)
-- [Thanos Remote Write](https://thanos.io/v0.10/201812_thanos-remote-receive.md/)
+- [A Thanos Remote Write: Scaling Metrics with Ease – Part 1](https://medium.com/@mohitverma160288/thanos-remote-write-scaling-metrics-with-ease-part1-eb861b9aefa9)
+- [thanos-remote-write (GitHub)](https://github.com/mvtech88/thanos-remote-write)
+- [Thanos (Multi-Cluster Prometheus) Tutorial: Global View – Long-Term Storage – Kubernetes](https://www.youtube.com/watch?v=feHSU0BMcco&t=776s)
+- [Thanos (Prometheus) Tutorial: Remote Read/Write – mTLS – Step-by-Step!](https://github.com/antonputra/tutorials/tree/main/lessons/163)
+- [Thanos Remote Receive Documentation](https://thanos.io/v0.10/201812_thanos-remote-receive.md/)
