@@ -16,7 +16,7 @@ spec:
       targetRevision: HEAD
       ref: values
   destination:
-    name: kind-slave
+    name: in-cluster
     namespace: monitoring
   syncPolicy:
     automated:
