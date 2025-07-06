@@ -6,7 +6,7 @@ prometheus:
       env: pro
     # Connecting with the other cluster to remote write metrics
     remoteWrite: 
-      - url:  https://receiver-write.example.com:8443/api/v1/receive
+      - url: https://receiver-write.example.com:8443/api/v1/receive
 
 # enable --web.enable-remote-write-receiver flag on prometheus-server
     enableRemoteWriteReceiver: true
