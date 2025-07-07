@@ -25,7 +25,7 @@ With `remote_write`, you can:
   - **Receiver**: receives remote write data from Prometheus.
   - **Querier**: provides a unified PromQL API to query data across all sources.
   - **Storage Gateway** and **Compactor**: handle long-term storage into an S3-compatible backend (MinIO).
-  - **Grafana**: visualizes all metrics from the Thanos Querier.
+- **Grafana**: visualizes all metrics from the Thanos Querier.
 - **S3 Bucket (MinIO)**: stores all metrics persistently and durably.
 
 ## ⚙️ Data Flow
@@ -62,7 +62,7 @@ This project includes a fully local observability stack based on **Prometheus**,
 To spin up the environment locally:
 
 ```bash
-./01-environment-setup.sh
+./01-environment-setup/setup.sh
 ```
 
 This script will:
