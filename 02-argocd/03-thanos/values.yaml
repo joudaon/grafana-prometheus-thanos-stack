@@ -3955,7 +3955,7 @@ receive:
   logFormat: logfmt
   ## @param receive.tsdbRetention Thanos Receive TSDB retention period
   ##
-  tsdbRetention: 5m # 15d
+  tsdbRetention: 15d
   ## @param receive.replicationProtocol Thanos Receive replication-protocol
   ## ref: https://thanos.io/tip/components/receive.md/#replication-protocols
   ##
