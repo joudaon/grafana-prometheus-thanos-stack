@@ -4119,7 +4119,13 @@ receive:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources: {}
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 384Mi
   ## Configure extra options for Thanos Receive containers' liveness and readiness probes
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
   ## @param receive.livenessProbe.enabled Enable livenessProbe on Thanos Receive containers
