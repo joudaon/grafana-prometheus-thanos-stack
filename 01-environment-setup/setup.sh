@@ -6,7 +6,7 @@ set -euo pipefail
 # 🎯 Initial configuration
 # ─────────────────────────────────────────────────────────────
 CLUSTER_NAME="master"
-ARGOCD_VERSION="7.8.16"
+ARGOCD_VERSION="8.5.3"
 ARGOCD_DOMAIN="argocd.myorg.com"
 ARGOCD_PORT="8443"
 GRAFANA_DOMAIN="grafana.local"
@@ -57,12 +57,18 @@ helm install argocd argo/argo-cd \
 echo "⏱ Waiting a bit for ArgoCD components to fully initialize..."
 sleep 5s
 
+# Give it a bit of time update /etc/hosts file
+echo "⏱ Update /etc/hosts file..."
+EXTERNAL_IP=$(kubectl get svc ingress-nginx-controller -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+echo $EXTERNAL_IP
+sleep 10s
+
 # ─────────────────────────────────────────────────────────────
 # 🔐 Login to ArgoCD
 # ─────────────────────────────────────────────────────────────
 echo "🔐 Logging into ArgoCD..."
 ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
-argocd login ${ARGOCD_DOMAIN}:${ARGOCD_PORT} --username admin --password $ARGOCD_PASSWORD --insecure --grpc-web
+argocd login ${ARGOCD_DOMAIN} --username admin --password $ARGOCD_PASSWORD --insecure --grpc-web
 
 # ─────────────────────────────────────────────────────────────
 # ✅ Wrap-up
@@ -71,16 +77,16 @@ echo ""
 echo "✅ Cluster and applications deployed successfully!"
 echo ""
 echo "🌐 Access your services:"
-echo "  ▶ ArgoCD             : https://${ARGOCD_DOMAIN}:${ARGOCD_PORT}/"
-echo "  ▶ Grafana            : https://${GRAFANA_DOMAIN}:8443/"
-echo "  ▶ Thanos Querier     : https://${QUERIER_THANOS_DOMAIN}:8443/"
-echo "  ▶ MinIO Console      : http://${MINIO_DOMAIN}/"
+echo "  ▶ ArgoCD             : https://${ARGOCD_DOMAIN}"
+echo "  ▶ Grafana            : https://${GRAFANA_DOMAIN}"
+echo "  ▶ Thanos Querier     : https://${QUERIER_THANOS_DOMAIN}"
+echo "  ▶ MinIO Console      : http://${MINIO_DOMAIN}"
 echo ""
 
 echo "💾 Saving ArgoCD credentials to '${CREDENTIALS_FILE}'..."
 rm -f $CREDENTIALS_FILE
 {
-  echo "ArgoCD URL       --> https://${ARGOCD_DOMAIN}:${ARGOCD_PORT}/"
+  echo "ArgoCD URL       --> https://${ARGOCD_DOMAIN}"
   echo "ArgoCD User      --> admin"
   echo "ArgoCD Password  --> $ARGOCD_PASSWORD"
   echo "Grafana User     --> admin"

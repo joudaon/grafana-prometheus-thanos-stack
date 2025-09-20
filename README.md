@@ -59,6 +59,8 @@ This project includes a fully local observability stack based on **Prometheus**,
 
 ### 🚀 Deploy the lab
 
+#### 1. Deploy Cluster and install ArgoCD
+
 To spin up the environment locally:
 
 ```bash
@@ -73,13 +75,39 @@ This script will:
 
   3. Deploy ArgoCD and login automatically.
 
-  4. (Optionally) Bootstrap Prometheus, Thanos, MinIO, and Grafana apps using ArgoCD.
-
 > ⚠️ Note: The lab assumes all services (ArgoCD, Grafana, etc.) will be exposed using MetalLB and reachable via custom local domains (e.g. `grafana.local`, `argocd.myorg.com`). You can add these to your `/etc/hosts` file like this:
 
 ```bash
 # Example /etc/hosts entries
 172.18.0.240  argocd.myorg.com grafana.local prometheus.local minio-console.local querier-thanos.local
+```
+
+#### 2. Deploy Grafana Stack
+
+1. Deploy Minio
+
+```bash
+kubectl apply -f 02-argocd/01-minio-operator/application.yaml
+kubectl apply -f 02-argocd/02-minio-tenant/application.yaml
+```
+
+Access Minio UI and create "Access Keys".
+
+Update `02-argocd/03-thanos/minio-objectstoresecret.yaml` Access Key values. 
+
+2. Deploy Thanos
+
+```bash
+kubectl create ns monitoring
+kubectl apply -f 02-argocd/03-thanos/minio-objectstoresecret.yaml
+kubectl apply -f 02-argocd/03-thanos/application.yaml
+```
+
+3. Deploy Grafana and Prometheus
+
+```bash
+kubectl apply -f 02-argocd/04-grafana/application.yaml
+kubectl apply -f 02-argocd/05-prometheus/application.yaml
 ```
 
 > 💡 Reminder: Configure Grafana Datasource
@@ -92,11 +120,11 @@ This script will:
 
 | Service        | URL                                     | Notes                      |
 |----------------|-----------------------------------------|----------------------------|
-| ArgoCD         | https://argocd.myorg.com:8443           | Argo UI for app management |
-| Grafana        | https://grafana.local:8443              | Metrics visualization      |
+| ArgoCD         | https://argocd.myorg.com                | Argo UI for app management |
+| Grafana        | https://grafana.local                   | Metrics visualization      |
 | Prometheus     | https://prometheus.local:8444           | Prometheus UI (via Ingress)|
-| MinIO Console  | https://minio-console.local:9001        | S3-compatible storage UI   |
-| Thanos Querier | https://querier-thanos.local:8444       | Unified PromQL interface   |
+| MinIO Console  | https://minio-console.local             | S3-compatible storage UI   |
+| Thanos Querier | https://querier-thanos.local            | Unified PromQL interface   |
 
 
 ## 🔗 References
