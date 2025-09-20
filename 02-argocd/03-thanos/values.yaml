@@ -4034,7 +4034,13 @@ receive:
   command: []
   ## @param receive.args Override default container args (useful when using custom images)
   ##
-  args: []
+  args:
+    - --tsdb.path=/var/thanos/receive
+    - --grpc-address=0.0.0.0:10901
+    - --http-address=0.0.0.0:10902
+    - --remote-write.address=0.0.0.0:19291
+    - --objstore.config-file=/etc/thanos/objstore.yaml
+    - --receive.replication-factor=1
   ## @param receive.replicaCount Number of Thanos Receive replicas to deploy
   ##
   replicaCount: 1
@@ -4196,10 +4202,16 @@ receive:
   sidecars: []
   ## @param receive.extraVolumes Extra volumes to add to Thanos Receive
   ##
-  extraVolumes: []
+  extraVolumes:
+    - name: objstore-config
+      secret:
+        secretName: thanos-objstore
   ## @param receive.extraVolumeMounts Extra volume mounts to add to the receive container
   ##
-  extraVolumeMounts: []
+  extraVolumeMounts:
+    - name: objstore-config
+      mountPath: /etc/thanos
+      readOnly: true
   ## @param receive.podAffinityPreset Thanos Receive pod affinity preset
   ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
   ## Allowed values: soft, hard
