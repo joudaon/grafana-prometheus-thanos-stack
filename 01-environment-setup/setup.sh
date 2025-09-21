@@ -32,11 +32,11 @@ kind create cluster --name "$CLUSTER_NAME" --config clusters/kind-${CLUSTER_NAME
 echo "🚀 Installing Nginx Ingress in '$CLUSTER_NAME'..."
 kubectl config use-context kind-${CLUSTER_NAME}
 kubectl apply -f deploy-ingress-nginx.yaml
-sleep 20s
+sleep 30s
 
 echo "📦 Installing MetalLB in '$CLUSTER_NAME'..."
 kubectl apply -f metallb/my-metallb.yaml
-sleep 20s
+sleep 30s
 kubectl apply -f metallb/metallb-config-master.yaml
 sleep 5s
 
