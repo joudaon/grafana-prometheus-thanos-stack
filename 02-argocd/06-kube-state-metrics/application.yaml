@@ -12,7 +12,7 @@ spec:
       helm:
         valueFiles:
           - $values/02-argocd/06-kube-state-metrics/values.yaml
-    - repoURL: https://github.com/joudaon/grafana-kube-state-metrics-thanos-stack.git
+    - repoURL: https://github.com/joudaon/grafana-prometheus-thanos-stack.git
       targetRevision: HEAD
       ref: values
   destination:
