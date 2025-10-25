@@ -103,11 +103,12 @@ kubectl apply -f 02-argocd/03-thanos/minio-objectstoresecret.yaml
 kubectl apply -f 02-argocd/03-thanos/application.yaml
 ```
 
-3. Deploy Grafana and Prometheus
+3. Deploy Grafana, Prometheus and kube-state-metrics
 
 ```bash
 kubectl apply -f 02-argocd/04-grafana/application.yaml
 kubectl apply -f 02-argocd/05-prometheus/application.yaml
+kubectl apply -f 02-argocd/06-kube-state-metrics/application.yaml
 ```
 
 > 💡 Reminder: Configure Grafana Datasource
