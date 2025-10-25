@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-state-metrics
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: kube-state-metrics
+      targetRevision: 6.3.0
+      helm:
+        valueFiles:
+          - $values/02-argocd/06-kube-state-metrics/values.yaml
+    - repoURL: https://github.com/joudaon/grafana-kube-state-metrics-thanos-stack.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    name: in-cluster
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true
+  info:
+    - name: Artifact Hub
+      value: https://artifacthub.io/packages/helm/prometheus-community/kube-state-metrics
